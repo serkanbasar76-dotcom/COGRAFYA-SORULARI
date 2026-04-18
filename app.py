@@ -8,7 +8,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# ====================== 25 KALİTELİ SORU ======================
+# ====================== 25 TAM SORU ======================
 questions_pool = [
     {"id": 1, "q": "Yer kabuğundan çekirdeğe doğru inildikçe sıcaklık, yoğunluk ve basınç artar. Dünya’nın en yoğun, en basınçlı ve en kalın katmanı hangisidir?", "options": ["A) Yer kabuğu", "B) Manto", "C) Çekirdek", "D) Astenosfer", "E) SIAL"], "correct": "C"},
     {"id": 2, "q": "Yer kabuğunun alt katmanında silisyum ve magnezyum yoğunluğu artar. Bu katmana ne ad verilir?", "options": ["A) SIAL", "B) SIMA", "C) Manto", "D) Barisfer", "E) Litosfer"], "correct": "B"},
@@ -47,6 +47,7 @@ if "current" not in st.session_state:
 if "show_analysis" not in st.session_state:
     st.session_state.show_analysis = False
 
+# Başlık
 st.markdown("""
 <div style="background: linear-gradient(90deg, #1e3a8a, #3b82f6); color: white; 
             padding: 1.2rem 1rem; border-radius: 16px; text-align: center; 
@@ -68,7 +69,7 @@ if not st.session_state.show_analysis:
     st.write(q["q"])
 
     selected = st.radio(
-        label="", 
+        label="",
         options=q["options"],
         index=None,
         key=f"q{st.session_state.current}",
@@ -85,62 +86,55 @@ if not st.session_state.show_analysis:
 
 else:
     st.title("📊 Sınav Analizi")
-    correct_count = 0
-    wrong_list = []
-
-    for i, q in enumerate(st.session_state.questions):
-        user_letter = st.session_state.answers.get(i, "Boş")
-        if user_letter == q["correct"]:
-            correct_count += 1
-        else:
-            user_full = next((opt for opt in q["options"] if opt.startswith(user_letter + ")")), user_letter)
-            correct_full = next((opt for opt in q["options"] if opt.startswith(q["correct"] + ")")), q["correct"])
-            wrong_list.append((i+1, q["q"][:140] + "...", user_full, correct_full))
-
+    correct_count = sum(1 for i, q in enumerate(st.session_state.questions) 
+                       if st.session_state.answers.get(i) == q["correct"])
     percent = round((correct_count / len(st.session_state.questions)) * 100)
 
     col1, col2 = st.columns([1, 3])
     with col1:
         st.metric("Başarı Oranı", f"%{percent}")
+
     with col2:
         if percent >= 80:
             st.success("🎉 TEBRİKLER HARİKASIN!")
-            # HAVAI FIŞEK + KONFETİ EFEKTİ
+            # GÜÇLÜ HAVAI FIŞEK EFEKTİ
             html("""
             <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
             <script>
-                function launchFireworks() {
-                    const count = 250;
+                function fireworks() {
+                    const count = 300;
                     const defaults = { origin: { y: 0.6 } };
-                    function fire(particleRatio, opts) {
-                        confetti(Object.assign({}, defaults, opts, {
-                            particleCount: Math.floor(count * particleRatio)
-                        }));
+                    function fire(ratio, opts) {
+                        confetti(Object.assign({}, defaults, opts, { particleCount: Math.floor(count * ratio) }));
                     }
-                    fire(0.25, { spread: 26, startVelocity: 55 });
-                    fire(0.2, { spread: 60 });
-                    fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
-                    fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
-                    fire(0.1, { spread: 120, startVelocity: 45 });
+                    fire(0.3, { spread: 40, startVelocity: 60 });
+                    fire(0.25, { spread: 80 });
+                    fire(0.35, { spread: 120, decay: 0.88 });
+                    fire(0.2, { spread: 150, startVelocity: 30 });
                 }
-                launchFireworks();
-                setTimeout(launchFireworks, 250);
-                setTimeout(launchFireworks, 500);
-                setTimeout(launchFireworks, 750);
+                fireworks();
+                setTimeout(fireworks, 180);
+                setTimeout(fireworks, 380);
+                setTimeout(fireworks, 580);
+                setTimeout(fireworks, 780);
             </script>
-            """, height=1)
+            """, height=200)
         else:
             st.info("Tekrar deneyerek daha iyi sonuçlar alabilirsiniz.")
 
     st.subheader("Yanlış Yapılan Sorular")
-    for num, text, user_full, correct_full in wrong_list:
-        st.error(f"""
-**Soru {num}**  
-{text}  
+    for i, q in enumerate(st.session_state.questions):
+        user_letter = st.session_state.answers.get(i, "Boş")
+        if user_letter != q["correct"]:
+            user_full = next((opt for opt in q["options"] if opt.startswith(user_letter + ")")), user_letter)
+            correct_full = next((opt for opt in q["options"] if opt.startswith(q["correct"] + ")")), q["correct"])
+            st.error(f"""
+**Soru {i+1}**  
+{q['q'][:140]}...  
 
 **Sizin cevabınız:** {user_full}  
 **Doğru cevap:** {correct_full}
-        """)
+            """)
 
     col1, col2 = st.columns(2)
     with col1:
