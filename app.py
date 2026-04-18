@@ -2,7 +2,6 @@ import streamlit as st
 import random
 import time
 from fpdf import FPDF
-import base64
 
 st.set_page_config(page_title="SERKAN HOCA İLE", page_icon="📘", layout="centered")
 
@@ -49,38 +48,49 @@ if "start_time" not in st.session_state:
 if "end_time" not in st.session_state:
     st.session_state.end_time = None
 
-# ====================== FONKSİYONLAR ======================
+# ====================== YARDIMCI FONKSİYONLAR ======================
+def clean_tr(text):
+    """Türkçe karakterleri PDF dostu karakterlere çevirir."""
+    tr_map = str.maketrans("ığüşöçİĞÜŞÖÇ", "igusocIGUSOC")
+    return str(text).translate(tr_map)
+
 def create_pdf(results, correct, total, duration):
-    pdf = FPDF()
-    pdf.add_page()
-    # Not: Türkçe karakter desteği için sisteminizde yüklü bir fontu belirtmeniz gerekebilir. 
-    # fpdf2 standart fontlarda Türkçe karakter sorunu çıkarabilir. Şimdilik temel yapı:
-    pdf.set_font("Arial", "B", 16)
-    pdf.cell(190, 10, txt="SINAV SONUC BELGESI", ln=True, align='C')
-    pdf.set_font("Arial", "", 12)
-    pdf.ln(10)
-    pdf.cell(100, 10, txt=f"Basari Orani: %{round((correct/total)*100)}", ln=True)
-    pdf.cell(100, 10, txt=f"Dogru Sayisi: {correct} / {total}", ln=True)
-    pdf.cell(100, 10, txt=f"Tamamlama Suresi: {duration}", ln=True)
-    pdf.ln(10)
-    pdf.cell(100, 10, txt="Yanlis Cevaplariniz:", ln=True)
-    
-    pdf.set_font("Arial", "", 10)
-    for res in results:
-        pdf.multi_cell(0, 10, txt=f"{res}")
-    
-    return pdf.output(dest='S').encode('latin-1', errors='ignore') # Basit çıktı için
+    try:
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font("Arial", "B", 16)
+        pdf.cell(190, 10, txt="SINAV SONUC BELGESI", ln=True, align='C')
+        pdf.ln(10)
+        
+        pdf.set_font("Arial", "", 12)
+        pdf.cell(0, 10, txt=clean_tr(f"Basari Orani: %{round((correct/total)*100)}"), ln=True)
+        pdf.cell(0, 10, txt=clean_tr(f"Dogru Sayisi: {correct} / {total}"), ln=True)
+        pdf.cell(0, 10, txt=clean_tr(f"Tamamlama Suresi: {duration}"), ln=True)
+        pdf.ln(10)
+        
+        pdf.set_font("Arial", "B", 12)
+        pdf.cell(0, 10, txt="YANLIS YAPILAN SORULAR:", ln=True)
+        pdf.set_font("Arial", "", 10)
+        pdf.ln(2)
+        
+        for res in results:
+            # Genişliği 190 vererek "horizontal space" hatasını engelliyoruz
+            pdf.multi_cell(190, 8, txt=clean_tr(res))
+            pdf.ln(2)
+            
+        return pdf.output(dest='S').encode('latin-1', errors='ignore')
+    except:
+        return None
 
 # ====================== TASARIM ======================
 st.markdown("""
 <style>
     .stApp { max-width: 100%; padding: 0.8rem 1rem; }
-    h1 { font-size: 2rem !important; }
     .stSuccess { background-color: #10b981; color: white; border-radius: 16px; }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown(f"""
+st.markdown("""
 <div style="background: linear-gradient(90deg, #1e3a8a, #3b82f6); color: white; 
             padding: 1.1rem; border-radius: 16px; text-align: center; margin-bottom: 1.2rem;">
     <h1 style="margin:0; font-size:2.1rem;">📘 SERKAN HOCA İLE</h1>
@@ -110,9 +120,8 @@ if not st.session_state.show_analysis:
 else:
     # Süre Hesaplama
     total_seconds = int(st.session_state.end_time - st.session_state.start_time)
-    minutes = total_seconds // 60
-    seconds = total_seconds % 60
-    sure_metni = f"{minutes} dakika {seconds} saniye"
+    min_val, sec_val = divmod(total_seconds, 60)
+    sure_metni = f"{min_val} dakika {sec_val} saniye"
 
     st.title("📊 Sınav Analizi")
     correct_count = sum(1 for i, q in enumerate(st.session_state.questions) if st.session_state.answers.get(i) == q["correct"])
@@ -123,16 +132,13 @@ else:
     col1, col2 = st.columns([1, 3])
     with col1:
         st.metric("Başarı Oranı", f"%{percent}")
-
     with col2:
         if percent >= 80:
             st.success("🎉 TEBRİKLER HARİKASIN!")
-            st.balloons()
-            st.snow()
         else:
             st.warning("Tekrar deneyerek daha iyi sonuçlar alabilirsiniz.")
 
-    # PDF İçin Veri Hazırlama ve İndirme Butonu
+    # Yanlış soruları listele ve PDF için hazırla
     wrong_list = []
     st.subheader("Yanlış Yapılan Sorular")
     for i, q in enumerate(st.session_state.questions):
@@ -140,29 +146,30 @@ else:
         if user_letter != q["correct"]:
             user_full = next((opt for opt in q["options"] if opt.startswith(user_letter + ")")), user_letter)
             correct_full = next((opt for opt in q["options"] if opt.startswith(q["correct"] + ")")), q["correct"])
-            st.error(f"**Soru {i+1}** \n{q['q'][:140]}... \n**Sizin cevabınız:** {user_full} \n**Doğru cevap:** {correct_full}")
-            wrong_list.append(f"Soru {i+1}: Sizin:{user_letter} - Dogru:{q['correct']}")
+            st.error(f"**Soru {i+1}:** {q['q'][:100]}...\n\n**Cevabınız:** {user_full} | **Doğru:** {correct_full}")
+            wrong_list.append(f"Soru {i+1}: {q['q'][:50]}... Cevabiniz: {user_letter}, Dogru: {q['correct']}")
 
-    st.divider()
-    
-    # PDF Oluşturma Butonu
+    # PDF İNDİRME BUTONU
     pdf_data = create_pdf(wrong_list, correct_count, len(st.session_state.questions), sure_metni)
-    st.download_button(
-        label="📥 Sonuçları PDF Olarak İndir",
-        data=pdf_data,
-        file_name="sinav_sonucu.pdf",
-        mime="application/pdf",
-        use_container_width=True
-    )
+    if pdf_data:
+        st.download_button(
+            label="📥 Sonuçları PDF Olarak İndir",
+            data=pdf_data,
+            file_name="sinav_sonucu.pdf",
+            mime="application/pdf",
+            use_container_width=True
+        )
 
-    col1, col2 = st.columns(2)
-    with col1:
+    # ALT BUTONLAR (Hata olsa bile artık burası hep görünür)
+    st.divider()
+    c1, c2 = st.columns(2)
+    with c1:
         if st.button("🔄 Sınavı Yeniden Başlat", type="primary", use_container_width=True):
             for key in list(st.session_state.keys()): del st.session_state[key]
             st.rerun()
-    with col2:
+    with c2:
         if st.button("🏠 Başa Dön", use_container_width=True):
             st.session_state.current = 0
             st.session_state.show_analysis = False
-            st.session_state.start_time = time.time() # Süreyi sıfırla
+            st.session_state.start_time = time.time()
             st.rerun()
