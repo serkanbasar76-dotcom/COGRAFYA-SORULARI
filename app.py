@@ -1,9 +1,12 @@
 import streamlit as st
 import random
+import time
+from fpdf import FPDF
+import base64
 
 st.set_page_config(page_title="SERKAN HOCA İLE", page_icon="📘", layout="centered")
 
-# ====================== 25 SORU ======================
+# ====================== SORU HAVUZU ======================
 questions_pool = [
     {"id": 1, "q": "Yer kabuğundan çekirdeğe doğru inildikçe sıcaklık, yoğunluk ve basınç artar. Dünya’nın en yoğun, en basınçlı ve en kalın katmanı hangisidir?", "options": ["A) Yer kabuğu", "B) Manto", "C) Çekirdek", "D) Astenosfer", "E) SIAL"], "correct": "C"},
     {"id": 2, "q": "Yer kabuğunun alt katmanında silisyum ve magnezyum yoğunluğu artar. Bu katmana ne ad verilir?", "options": ["A) SIAL", "B) SIMA", "C) Manto", "D) Barisfer", "E) Litosfer"], "correct": "B"},
@@ -32,6 +35,7 @@ questions_pool = [
     {"id": 25, "q": "Kayaç döngüsünde ... Aşağıdakilerden hangisi metamorfik kayaç örneğidir?", "options": ["A) Bazalt", "B) Kumtaşı", "C) Kalker", "D) Linyit", "E) Mermer"], "correct": "E"}
 ]
 
+# ====================== SESSION STATE ======================
 if "questions" not in st.session_state:
     st.session_state.questions = random.sample(questions_pool, len(questions_pool))
 if "answers" not in st.session_state:
@@ -40,8 +44,34 @@ if "current" not in st.session_state:
     st.session_state.current = 0
 if "show_analysis" not in st.session_state:
     st.session_state.show_analysis = False
+if "start_time" not in st.session_state:
+    st.session_state.start_time = time.time()
+if "end_time" not in st.session_state:
+    st.session_state.end_time = None
 
-# Tasarım iyileştirmeleri
+# ====================== FONKSİYONLAR ======================
+def create_pdf(results, correct, total, duration):
+    pdf = FPDF()
+    pdf.add_page()
+    # Not: Türkçe karakter desteği için sisteminizde yüklü bir fontu belirtmeniz gerekebilir. 
+    # fpdf2 standart fontlarda Türkçe karakter sorunu çıkarabilir. Şimdilik temel yapı:
+    pdf.set_font("Arial", "B", 16)
+    pdf.cell(190, 10, txt="SINAV SONUC BELGESI", ln=True, align='C')
+    pdf.set_font("Arial", "", 12)
+    pdf.ln(10)
+    pdf.cell(100, 10, txt=f"Basari Orani: %{round((correct/total)*100)}", ln=True)
+    pdf.cell(100, 10, txt=f"Dogru Sayisi: {correct} / {total}", ln=True)
+    pdf.cell(100, 10, txt=f"Tamamlama Suresi: {duration}", ln=True)
+    pdf.ln(10)
+    pdf.cell(100, 10, txt="Yanlis Cevaplariniz:", ln=True)
+    
+    pdf.set_font("Arial", "", 10)
+    for res in results:
+        pdf.multi_cell(0, 10, txt=f"{res}")
+    
+    return pdf.output(dest='S').encode('latin-1', errors='ignore') # Basit çıktı için
+
+# ====================== TASARIM ======================
 st.markdown("""
 <style>
     .stApp { max-width: 100%; padding: 0.8rem 1rem; }
@@ -50,7 +80,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
+st.markdown(f"""
 <div style="background: linear-gradient(90deg, #1e3a8a, #3b82f6); color: white; 
             padding: 1.1rem; border-radius: 16px; text-align: center; margin-bottom: 1.2rem;">
     <h1 style="margin:0; font-size:2.1rem;">📘 SERKAN HOCA İLE</h1>
@@ -58,6 +88,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# ====================== SINAV EKRANI ======================
 if not st.session_state.show_analysis:
     st.progress(st.session_state.current / len(st.session_state.questions))
     q = st.session_state.questions[st.session_state.current]
@@ -71,13 +102,23 @@ if not st.session_state.show_analysis:
         if st.session_state.current < len(st.session_state.questions) - 1:
             st.session_state.current += 1
         else:
+            st.session_state.end_time = time.time()
             st.session_state.show_analysis = True
         st.rerun()
 
+# ====================== ANALİZ EKRANI ======================
 else:
+    # Süre Hesaplama
+    total_seconds = int(st.session_state.end_time - st.session_state.start_time)
+    minutes = total_seconds // 60
+    seconds = total_seconds % 60
+    sure_metni = f"{minutes} dakika {seconds} saniye"
+
     st.title("📊 Sınav Analizi")
     correct_count = sum(1 for i, q in enumerate(st.session_state.questions) if st.session_state.answers.get(i) == q["correct"])
     percent = round((correct_count / len(st.session_state.questions)) * 100)
+
+    st.info(f"⏱️ **Sınavı Tamamlama Süreniz:** {sure_metni}")
 
     col1, col2 = st.columns([1, 3])
     with col1:
@@ -88,23 +129,31 @@ else:
             st.success("🎉 TEBRİKLER HARİKASIN!")
             st.balloons()
             st.snow()
-            st.markdown("""
-            <div style="padding: 2rem; background: linear-gradient(90deg, #10b981, #34d399); 
-            border-radius: 20px; text-align:center; color:white; margin:1rem 0; box-shadow: 0 10px 30px rgba(16,185,129,0.4);">
-                <h2 style="margin:0; font-size:2.3rem;">Harika bir performans!</h2>
-                <p style="margin:0.8rem 0 0 0; font-size:1.4rem;">Bu başarıyı gerçekten kutluyoruz! 🎊</p>
-            </div>
-            """, unsafe_allow_html=True)
         else:
-            st.info("Tekrar deneyerek daha iyi sonuçlar alabilirsiniz.")
+            st.warning("Tekrar deneyerek daha iyi sonuçlar alabilirsiniz.")
 
+    # PDF İçin Veri Hazırlama ve İndirme Butonu
+    wrong_list = []
     st.subheader("Yanlış Yapılan Sorular")
     for i, q in enumerate(st.session_state.questions):
         user_letter = st.session_state.answers.get(i, "Boş")
         if user_letter != q["correct"]:
             user_full = next((opt for opt in q["options"] if opt.startswith(user_letter + ")")), user_letter)
             correct_full = next((opt for opt in q["options"] if opt.startswith(q["correct"] + ")")), q["correct"])
-            st.error(f"**Soru {i+1}**  \n{q['q'][:140]}...  \n**Sizin cevabınız:** {user_full}  \n**Doğru cevap:** {correct_full}")
+            st.error(f"**Soru {i+1}** \n{q['q'][:140]}... \n**Sizin cevabınız:** {user_full} \n**Doğru cevap:** {correct_full}")
+            wrong_list.append(f"Soru {i+1}: Sizin:{user_letter} - Dogru:{q['correct']}")
+
+    st.divider()
+    
+    # PDF Oluşturma Butonu
+    pdf_data = create_pdf(wrong_list, correct_count, len(st.session_state.questions), sure_metni)
+    st.download_button(
+        label="📥 Sonuçları PDF Olarak İndir",
+        data=pdf_data,
+        file_name="sinav_sonucu.pdf",
+        mime="application/pdf",
+        use_container_width=True
+    )
 
     col1, col2 = st.columns(2)
     with col1:
@@ -115,4 +164,5 @@ else:
         if st.button("🏠 Başa Dön", use_container_width=True):
             st.session_state.current = 0
             st.session_state.show_analysis = False
+            st.session_state.start_time = time.time() # Süreyi sıfırla
             st.rerun()
