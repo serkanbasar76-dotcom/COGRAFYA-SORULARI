@@ -46,14 +46,20 @@ if "current" not in st.session_state:
 if "show_analysis" not in st.session_state:
     st.session_state.show_analysis = False
 
+# Daha küçük ve kompakt başlık (ekrana tam sığacak şekilde)
 st.markdown("""
-<div style="background: linear-gradient(90deg, #1e3a8a, #3b82f6); color: white; padding: 2rem; border-radius: 20px; text-align: center; margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(30,58,138,0.3);">
-    <h1 style="font-size: 3rem; margin: 0;">📘 SERKAN HOCA İLE</h1>
-    <h2 style="margin: 0; opacity: 0.95;">10. Sınıf Coğrafya • Yer'in Yapısı ve Levha Hareketleri</h2>
+<div style="background: linear-gradient(90deg, #1e3a8a, #3b82f6); color: white; 
+            padding: 1.2rem 1rem; border-radius: 16px; text-align: center; 
+            margin-bottom: 1.2rem; box-shadow: 0 8px 25px rgba(30,58,138,0.3);">
+    <h1 style="font-size: 2.1rem; margin: 0; font-weight: 700;">📘 SERKAN HOCA İLE</h1>
+    <h2 style="font-size: 1.25rem; margin: 0.2rem 0 0 0; opacity: 0.95;">
+        10. Sınıf Coğrafya • Yer'in Yapısı ve Levha Hareketleri
+    </h2>
 </div>
 """, unsafe_allow_html=True)
 
 if not st.session_state.show_analysis:
+    # Kompakt progress bar
     progress = st.session_state.current / len(st.session_state.questions)
     st.progress(progress)
 
@@ -62,30 +68,27 @@ if not st.session_state.show_analysis:
     st.subheader(f"Soru {st.session_state.current + 1} / {len(st.session_state.questions)}")
     st.write(q["q"])
 
-    # ★★★ DÜZELTME BURADA ★★★
     selected = st.radio(
         "Cevabınızı seçiniz:",
         q["options"],
-        index=None,                    # ← Bu satır çok önemli! Hiçbir şık önceden işaretli gelmez
+        index=None,
         key=f"q{st.session_state.current}"
     )
 
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        if st.button("✅ Cevabı Kaydet ve Sonraki Soruya Geç", 
-                     type="primary", 
-                     use_container_width=True,
-                     disabled=selected is None):   # Hiçbir şey seçilmediyse buton pasif olur
-            st.session_state.answers[st.session_state.current] = selected[0]
-            if st.session_state.current < len(st.session_state.questions) - 1:
-                st.session_state.current += 1
-                st.rerun()
-            else:
-                st.session_state.show_analysis = True
-                st.rerun()
+    if st.button("✅ Cevabı Kaydet ve Sonraki Soruya Geç", 
+                 type="primary", 
+                 use_container_width=True,
+                 disabled=selected is None):
+        st.session_state.answers[st.session_state.current] = selected[0]
+        if st.session_state.current < len(st.session_state.questions) - 1:
+            st.session_state.current += 1
+            st.rerun()
+        else:
+            st.session_state.show_analysis = True
+            st.rerun()
 
 else:
-    # ANALİZ EKRANI (değişmedi)
+    # ANALİZ EKRANI
     st.title("📊 Sınav Analizi")
     correct_count = 0
     wrong_list = []
