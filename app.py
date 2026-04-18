@@ -46,6 +46,7 @@ if "current" not in st.session_state:
 if "show_analysis" not in st.session_state:
     st.session_state.show_analysis = False
 
+# Başlık (kompakt)
 st.markdown("""
 <div style="background: linear-gradient(90deg, #1e3a8a, #3b82f6); color: white; 
             padding: 1.2rem 1rem; border-radius: 16px; text-align: center; 
@@ -66,27 +67,29 @@ if not st.session_state.show_analysis:
     st.subheader(f"Soru {st.session_state.current + 1} / {len(st.session_state.questions)}")
     st.write(q["q"])
 
-    selected = st.radio(
-        "Cevabınızı seçiniz:",
-        q["options"],
+    # Otomatik ilerleme için callback fonksiyonu
+    def auto_next():
+        selected = st.session_state.get(f"q{st.session_state.current}")
+        if selected:
+            st.session_state.answers[st.session_state.current] = selected[0]
+            if st.session_state.current < len(st.session_state.questions) - 1:
+                st.session_state.current += 1
+            else:
+                st.session_state.show_analysis = True
+            st.rerun()
+
+    # Radio - label boş + otomatik ilerleme
+    st.radio(
+        label="",                    # ← Bu satır "Cevabınızı seçiniz" yazısını tamamen kaldırır
+        options=q["options"],
         index=None,
-        key=f"q{st.session_state.current}"
+        key=f"q{st.session_state.current}",
+        on_change=auto_next,         # ← Tıklayınca otomatik geçer
+        label_visibility="collapsed"
     )
 
-    if st.button("✅ Cevabı Kaydet ve Sonraki Soruya Geç", 
-                 type="primary", 
-                 use_container_width=True,
-                 disabled=selected is None):
-        st.session_state.answers[st.session_state.current] = selected[0]
-        if st.session_state.current < len(st.session_state.questions) - 1:
-            st.session_state.current += 1
-            st.rerun()
-        else:
-            st.session_state.show_analysis = True
-            st.rerun()
-
 else:
-    # ====================== ANALİZ EKRANI (YENİ HALİ) ======================
+    # ====================== ANALİZ EKRANI ======================
     st.title("📊 Sınav Analizi")
     correct_count = 0
     wrong_list = []
@@ -96,10 +99,8 @@ else:
         if user_letter == q["correct"]:
             correct_count += 1
         else:
-            # Tam şık metinlerini bul
             user_full = next((opt for opt in q["options"] if opt.startswith(user_letter + ")")), user_letter)
             correct_full = next((opt for opt in q["options"] if opt.startswith(q["correct"] + ")")), q["correct"])
-            
             wrong_list.append((i+1, q["q"][:140] + "...", user_full, correct_full))
 
     percent = round((correct_count / len(st.session_state.questions)) * 100)
@@ -115,7 +116,6 @@ else:
             st.info("Tekrar deneyerek daha iyi sonuçlar alabilirsiniz.")
 
     st.subheader("Yanlış Yapılan Sorular")
-    
     for num, text, user_full, correct_full in wrong_list:
         st.error(f"""
 **Soru {num}**  
