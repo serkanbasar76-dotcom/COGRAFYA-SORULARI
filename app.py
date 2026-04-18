@@ -2,10 +2,40 @@ import streamlit as st
 import random
 from streamlit.components.v1 import html
 
-st.set_page_config(page_title="SERKAN HOCA İLE", page_icon="📘", layout="centered")
+st.set_page_config(
+    page_title="SERKAN HOCA İLE - Coğrafya Soru Bankası",
+    page_icon="📘",
+    layout="centered"
+)
 
-# ====================== SORU BANKASI ======================
-questions_pool = [ ... ]  # (25 soru aynı kalıyor, yer kaplamasın diye kısalttım)
+# ====================== 25 KALİTELİ SORU ======================
+questions_pool = [
+    {"id": 1, "q": "Yer kabuğundan çekirdeğe doğru inildikçe sıcaklık, yoğunluk ve basınç artar. Dünya’nın en yoğun, en basınçlı ve en kalın katmanı hangisidir?", "options": ["A) Yer kabuğu", "B) Manto", "C) Çekirdek", "D) Astenosfer", "E) SIAL"], "correct": "C"},
+    {"id": 2, "q": "Yer kabuğunun alt katmanında silisyum ve magnezyum yoğunluğu artar. Bu katmana ne ad verilir?", "options": ["A) SIAL", "B) SIMA", "C) Manto", "D) Barisfer", "E) Litosfer"], "correct": "B"},
+    {"id": 3, "q": "Dünya’nın toplam hacminin yaklaşık %84’ünü oluşturan, 70-2900 km derinliğinde yer alan ve sıvı-akışkan yapıdaki katman aşağıdakilerden hangisidir?", "options": ["A) Yer kabuğu", "B) Çekirdek", "C) Manto", "D) SIAL", "E) Sima"], "correct": "C"},
+    {"id": 4, "q": "1915 yılında Alfred Wegener tarafından ortaya atılan ve kıtaların tek parça halinde olduğunu savunan teori hangisidir?", "options": ["A) Levha Tektoniği Teorisi", "B) Deprem Teorisi", "C) Volkanizma Teorisi", "D) Kıtaların Kayma Teorisi", "E) Epirojenez Teorisi"], "correct": "D"},
+    {"id": 5, "q": "Levha hareketleri kaç farklı şekilde gerçekleşir ve ülkemiz hangi iki levha arasında yer alır?", "options": ["A) 2 şekilde – Avrasya ve Pasifik", "B) 4 şekilde – Afrika ve Antarktika", "C) 1 şekilde – Sadece yaklaşma", "D) 5 şekilde – Pasifik ve İzlanda", "E) 3 şekilde – Yaklaşma, uzaklaşma ve yanal yer değiştirme"], "correct": "E"},
+    {"id": 6, "q": "Ülkemizin büyük bir kısmı 3. Jeolojik zamanda (Senozoyik) oluşmuştur. Bu durum ülkemizi hangi açıdan etkilemektedir?", "options": ["A) Deprem riski yüksek ve genç oluşumlu bir ülkeyiz", "B) Masif araziler bakımından zenginiz", "C) Taş kömürü yatakları çok fazladır", "D) Dinazor fosilleri yaygındır", "E) Prekambriyen kayaçlar hâkimdir"], "correct": "A"},
+    {"id": 7, "q": "Dünya yaklaşık 4,5 milyar yıl önce yaratılmıştır. ... Mezozoyik (2. zaman) devrinde gerçekleşen olay hangisidir?", "options": ["A) İnsan yaratılmıştır", "B) Dinazorlar ortaya çıkmıştır", "C) Ege Denizi oluşmuştur", "D) Toros Dağları oluşmuştur", "E) Taş kömürü yatakları oluşmuştur"], "correct": "B"},
+    {"id": 8, "q": "Yer kabuğu parçalarının (levhaların) yükselmesi veya alçalması şeklinde gerçekleşen iç kuvvet hangisidir?", "options": ["A) Orojenez", "B) Volkanizma", "C) Epirojenez", "D) Deprem", "E) Tsunami"], "correct": "C"},
+    {"id": 9, "q": "Karaların ağırlaşarak çökmesi sonucu denizin karaya doğru ilerlemesine ne ad verilir?", "options": ["A) Regresyon", "B) Orojenez", "C) Konveksiyonel akım", "D) Transgresyon", "E) Aşınma"], "correct": "D"},
+    {"id": 10, "q": "Okyanus ve deniz tabanındaki tortul tabakaların kıtaların hareketiyle yan basınca uğraması sonucu oluşan dağ türü hangisidir?", "options": ["A) Volkanik dağlar", "B) Masif dağlar", "C) Epirojenez dağları", "D) Kırıklı dağlar", "E) Kıvrımlı ve kırıklı dağlar"], "correct": "E"},
+    {"id": 11, "q": "Kıvrımlı dağlarda yüksekte kalan yerlere ne denir?", "options": ["A) Antiklinal", "B) Senklinal", "C) Horst", "D) Graben", "E) Dayk"], "correct": "A"},
+    {"id": 12, "q": "Kırıklı dağlarda alçakta kalan yerlere ne denir? Ülkemizde bu tür ovaların en çok bulunduğu bölge hangisidir?", "options": ["A) Antiklinal – Doğu Anadolu", "B) Graben – Ege Bölgesi", "C) Senklinal – Karadeniz", "D) Horst – Akdeniz", "E) Kaldera – İç Anadolu"], "correct": "B"},
+    {"id": 13, "q": "Ülkemizde aktif volkan bulunmadığı için hangi deprem türü görülmez?", "options": ["A) Tektonik depremler", "B) Çöküntü depremleri", "C) Volkanik depremler", "D) Tsunami depremleri", "E) Epirojenez depremleri"], "correct": "C"},
+    {"id": 14, "q": "Depremi inceleyen bilim dalının adı nedir?", "options": ["A) Jeoloji", "B) Volkanoloji", "C) Petrografi", "D) Sismoloji", "E) Orojenez"], "correct": "D"},
+    {"id": 15, "q": "Magmanın yer yüzüne çıkıp soğuyarak katılaşmasına ne denir?", "options": ["A) Derinlik volkanizması", "B) Konveksiyonel akım", "C) Epirojenez", "D) Orojenez", "E) Yüzey volkanizması"], "correct": "E"},
+    {"id": 16, "q": "Derinlik volkanizmasında magmanın yerkabuğunun içine sokularak oluşan çok büyük volkanik kütleye ne ad verilir?", "options": ["A) Batolit", "B) Lakolit", "C) Sill", "D) Dayk", "E) Krater"], "correct": "A"},
+    {"id": 17, "q": "Magmanın yerin derinliklerinde yavaş soğuyup katılaşmasıyla oluşan püskürük kayalara ne denir?", "options": ["A) Dış püskürük kayalar", "B) İç püskürük (plütonik) kayalar", "C) Tortul kayalar", "D) Metamorfik kayalar", "E) Organik tortul kayalar"], "correct": "B"},
+    {"id": 18, "q": "Bitkisel ve hayvansal artıkların uzun süre toprak altında kalmasıyla oluşan tortul kayaç türü hangisidir?", "options": ["A) Fiziksel tortul", "B) Kimyasal tortul", "C) Organik tortul", "D) Püskürük kayaç", "E) Başkalaşım kayaç"], "correct": "C"},
+    {"id": 19, "q": "Kayaç döngüsünde tortul kayaçların oluşumunda etkili olan temel süreç hangisidir?", "options": ["A) Erime-soğuma", "B) Yüksek sıcaklık ve basınç", "C) Kristalleşme", "D) Aşınma-taşıma-biriktirme", "E) Magmanın sokulması"], "correct": "D"},
+    {"id": 20, "q": "Türkiye bugünkü görünümünü hangi jeolojik zamanda almıştır?", "options": ["A) 1. jeolojik zamanda", "B) 2. jeolojik zamanda", "C) Prekambriyen dönemde", "D) Mezozoyik dönemde", "E) 3. jeolojik zamanda"], "correct": "E"},
+    {"id": 21, "q": "Türkiye en çok hangi orojenezden etkilenmiştir ve bu dönemde hangi dağlar oluşmuştur?", "options": ["A) Alp orojenezinden – Kuzey Anadolu ve Toros Dağları", "B) Kaledoniyen orojenezinden – İskandinavya Dağları", "C) Hersiniyen orojenezinden – Appalaş Dağları", "D) Epirojenezden – Ege grabenleri", "E) Volkanizmadan – Kula tepeleri"], "correct": "A"},
+    {"id": 22, "q": "Türkiye’de deprem riski en az olan yöre aşağıdakilerden hangisidir?", "options": ["A) İstanbul", "B) Konya - Karapınar", "C) İzmir", "D) Van", "E) Hatay"], "correct": "B"},
+    {"id": 23, "q": "Okyanus ve deniz tabanında biriken tortul tabakalar... kıvrımlı dağ örneği hangisidir?", "options": ["A) Ege bölgesindeki dağlar", "B) Kaz Dağı", "C) Toroslar", "D) Madra Dağı", "E) Aydın Dağları"], "correct": "C"},
+    {"id": 24, "q": "Yüzey volkanizması magmanın yer yüzüne çıkıp soğuyarak katılaşmasıdır. Derinlik volkanizması örneği aşağıdakilerden hangisidir?", "options": ["A) Volkan konisi", "B) Krater", "C) Kaldera", "D) Batolit", "E) Maar"], "correct": "D"},
+    {"id": 25, "q": "Kayaç döngüsünde ... Aşağıdakilerden hangisi metamorfik kayaç örneğidir?", "options": ["A) Bazalt", "B) Kumtaşı", "C) Kalker", "D) Linyit", "E) Mermer"], "correct": "E"}
+]
 
 # ====================== UYGULAMA ======================
 if "questions" not in st.session_state:
@@ -17,7 +47,6 @@ if "current" not in st.session_state:
 if "show_analysis" not in st.session_state:
     st.session_state.show_analysis = False
 
-# Başlık
 st.markdown("""
 <div style="background: linear-gradient(90deg, #1e3a8a, #3b82f6); color: white; 
             padding: 1.2rem 1rem; border-radius: 16px; text-align: center; 
@@ -30,15 +59,21 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 if not st.session_state.show_analysis:
-    # ... (soru kısmı aynı kalıyor)
     progress = st.session_state.current / len(st.session_state.questions)
     st.progress(progress)
+
     q = st.session_state.questions[st.session_state.current]
+
     st.subheader(f"Soru {st.session_state.current + 1} / {len(st.session_state.questions)}")
     st.write(q["q"])
 
-    selected = st.radio(label="", options=q["options"], index=None, 
-                        key=f"q{st.session_state.current}", label_visibility="collapsed")
+    selected = st.radio(
+        label="", 
+        options=q["options"],
+        index=None,
+        key=f"q{st.session_state.current}",
+        label_visibility="collapsed"
+    )
 
     if selected:
         st.session_state.answers[st.session_state.current] = selected[0]
@@ -49,61 +84,69 @@ if not st.session_state.show_analysis:
         st.rerun()
 
 else:
-    # ====================== ANALİZ EKRANI ======================
     st.title("📊 Sınav Analizi")
-    correct_count = sum(1 for i, q in enumerate(st.session_state.questions) 
-                       if st.session_state.answers.get(i) == q["correct"])
+    correct_count = 0
+    wrong_list = []
+
+    for i, q in enumerate(st.session_state.questions):
+        user_letter = st.session_state.answers.get(i, "Boş")
+        if user_letter == q["correct"]:
+            correct_count += 1
+        else:
+            user_full = next((opt for opt in q["options"] if opt.startswith(user_letter + ")")), user_letter)
+            correct_full = next((opt for opt in q["options"] if opt.startswith(q["correct"] + ")")), q["correct"])
+            wrong_list.append((i+1, q["q"][:140] + "...", user_full, correct_full))
+
     percent = round((correct_count / len(st.session_state.questions)) * 100)
 
     col1, col2 = st.columns([1, 3])
     with col1:
         st.metric("Başarı Oranı", f"%{percent}")
-    
     with col2:
         if percent >= 80:
             st.success("🎉 TEBRİKLER HARİKASIN!")
-            
-            # GÜÇLENDİRİLMİŞ HAVAI FIŞEK EFEKTİ
+            # HAVAI FIŞEK + KONFETİ EFEKTİ
             html("""
             <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
             <script>
-                function fireworks() {
-                    const count = 300;
+                function launchFireworks() {
+                    const count = 250;
                     const defaults = { origin: { y: 0.6 } };
-                    function fire(ratio, opts) {
+                    function fire(particleRatio, opts) {
                         confetti(Object.assign({}, defaults, opts, {
-                            particleCount: Math.floor(count * ratio)
+                            particleCount: Math.floor(count * particleRatio)
                         }));
                     }
-                    fire(0.3, { spread: 40, startVelocity: 60 });
-                    fire(0.25, { spread: 80 });
-                    fire(0.35, { spread: 120, decay: 0.88, scalar: 1.1 });
-                    fire(0.2, { spread: 150, startVelocity: 30, decay: 0.92 });
+                    fire(0.25, { spread: 26, startVelocity: 55 });
+                    fire(0.2, { spread: 60 });
+                    fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+                    fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+                    fire(0.1, { spread: 120, startVelocity: 45 });
                 }
-                fireworks();
-                setTimeout(fireworks, 180);
-                setTimeout(fireworks, 380);
-                setTimeout(fireworks, 580);
-                setTimeout(fireworks, 780);
+                launchFireworks();
+                setTimeout(launchFireworks, 250);
+                setTimeout(launchFireworks, 500);
+                setTimeout(launchFireworks, 750);
             </script>
-            """, height=180)   # ← Yükseklik artırıldı, daha güvenilir çalışıyor
-
+            """, height=1)
         else:
-            st.info("Daha iyi bir sonuç için tekrar deneyebilirsiniz.")
+            st.info("Tekrar deneyerek daha iyi sonuçlar alabilirsiniz.")
 
-    # Yanlış sorular kısmı (aynı)
     st.subheader("Yanlış Yapılan Sorular")
-    for i, q in enumerate(st.session_state.questions):
-        user_letter = st.session_state.answers.get(i, "Boş")
-        if user_letter != q["correct"]:
-            user_full = next((opt for opt in q["options"] if opt.startswith(user_letter + ")")), user_letter)
-            correct_full = next((opt for opt in q["options"] if opt.startswith(q["correct"] + ")")), q["correct"])
-            st.error(f"**Soru {i+1}**  \n{q['q'][:140]}...  \n**Sizin cevabınız:** {user_full}  \n**Doğru cevap:** {correct_full}")
+    for num, text, user_full, correct_full in wrong_list:
+        st.error(f"""
+**Soru {num}**  
+{text}  
+
+**Sizin cevabınız:** {user_full}  
+**Doğru cevap:** {correct_full}
+        """)
 
     col1, col2 = st.columns(2)
     with col1:
         if st.button("🔄 Sınavı Yeniden Başlat", type="primary", use_container_width=True):
-            for key in list(st.session_state.keys()): del st.session_state[key]
+            for key in list(st.session_state.keys()):
+                del st.session_state[key]
             st.rerun()
     with col2:
         if st.button("🏠 Başa Dön", use_container_width=True):
