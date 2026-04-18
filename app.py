@@ -46,7 +46,7 @@ if "current" not in st.session_state:
 if "show_analysis" not in st.session_state:
     st.session_state.show_analysis = False
 
-# Başlık (kompakt)
+# Kompakt başlık
 st.markdown("""
 <div style="background: linear-gradient(90deg, #1e3a8a, #3b82f6); color: white; 
             padding: 1.2rem 1rem; border-radius: 16px; text-align: center; 
@@ -67,26 +67,25 @@ if not st.session_state.show_analysis:
     st.subheader(f"Soru {st.session_state.current + 1} / {len(st.session_state.questions)}")
     st.write(q["q"])
 
-    # Otomatik ilerleme için callback fonksiyonu
-    def auto_next():
-        selected = st.session_state.get(f"q{st.session_state.current}")
-        if selected:
-            st.session_state.answers[st.session_state.current] = selected[0]
-            if st.session_state.current < len(st.session_state.questions) - 1:
-                st.session_state.current += 1
-            else:
-                st.session_state.show_analysis = True
-            st.rerun()
-
-    # Radio - label boş + otomatik ilerleme
-    st.radio(
-        label="",                    # ← Bu satır "Cevabınızı seçiniz" yazısını tamamen kaldırır
+    # Radio (etiket kaldırıldı)
+    selected = st.radio(
+        label="", 
         options=q["options"],
         index=None,
         key=f"q{st.session_state.current}",
-        on_change=auto_next,         # ← Tıklayınca otomatik geçer
         label_visibility="collapsed"
     )
+
+    # SEÇİM YAPILDIĞI AN OTOMATİK İLERLEME (uyarı vermeyen yöntem)
+    if selected:
+        st.session_state.answers[st.session_state.current] = selected[0]
+        
+        if st.session_state.current < len(st.session_state.questions) - 1:
+            st.session_state.current += 1
+        else:
+            st.session_state.show_analysis = True
+        
+        st.rerun()
 
 else:
     # ====================== ANALİZ EKRANI ======================
