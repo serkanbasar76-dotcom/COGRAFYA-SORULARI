@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+from streamlit.components.v1 import html
 
 st.set_page_config(
     page_title="SERKAN HOCA İLE - Coğrafya Soru Bankası",
@@ -46,7 +47,6 @@ if "current" not in st.session_state:
 if "show_analysis" not in st.session_state:
     st.session_state.show_analysis = False
 
-# Kompakt başlık
 st.markdown("""
 <div style="background: linear-gradient(90deg, #1e3a8a, #3b82f6); color: white; 
             padding: 1.2rem 1rem; border-radius: 16px; text-align: center; 
@@ -67,7 +67,6 @@ if not st.session_state.show_analysis:
     st.subheader(f"Soru {st.session_state.current + 1} / {len(st.session_state.questions)}")
     st.write(q["q"])
 
-    # Radio (etiket kaldırıldı)
     selected = st.radio(
         label="", 
         options=q["options"],
@@ -76,19 +75,15 @@ if not st.session_state.show_analysis:
         label_visibility="collapsed"
     )
 
-    # SEÇİM YAPILDIĞI AN OTOMATİK İLERLEME (uyarı vermeyen yöntem)
     if selected:
         st.session_state.answers[st.session_state.current] = selected[0]
-        
         if st.session_state.current < len(st.session_state.questions) - 1:
             st.session_state.current += 1
         else:
             st.session_state.show_analysis = True
-        
         st.rerun()
 
 else:
-    # ====================== ANALİZ EKRANI ======================
     st.title("📊 Sınav Analizi")
     correct_count = 0
     wrong_list = []
@@ -110,7 +105,30 @@ else:
     with col2:
         if percent >= 80:
             st.success("🎉 TEBRİKLER HARİKASIN!")
-            st.balloons()
+            # HAVAI FIŞEK + KONFETİ EFEKTİ
+            html("""
+            <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+            <script>
+                function launchFireworks() {
+                    const count = 250;
+                    const defaults = { origin: { y: 0.6 } };
+                    function fire(particleRatio, opts) {
+                        confetti(Object.assign({}, defaults, opts, {
+                            particleCount: Math.floor(count * particleRatio)
+                        }));
+                    }
+                    fire(0.25, { spread: 26, startVelocity: 55 });
+                    fire(0.2, { spread: 60 });
+                    fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+                    fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+                    fire(0.1, { spread: 120, startVelocity: 45 });
+                }
+                launchFireworks();
+                setTimeout(launchFireworks, 250);
+                setTimeout(launchFireworks, 500);
+                setTimeout(launchFireworks, 750);
+            </script>
+            """, height=1)
         else:
             st.info("Tekrar deneyerek daha iyi sonuçlar alabilirsiniz.")
 
