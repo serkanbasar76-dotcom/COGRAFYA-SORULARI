@@ -46,7 +46,6 @@ if "current" not in st.session_state:
 if "show_analysis" not in st.session_state:
     st.session_state.show_analysis = False
 
-# Daha küçük ve kompakt başlık (ekrana tam sığacak şekilde)
 st.markdown("""
 <div style="background: linear-gradient(90deg, #1e3a8a, #3b82f6); color: white; 
             padding: 1.2rem 1rem; border-radius: 16px; text-align: center; 
@@ -59,7 +58,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 if not st.session_state.show_analysis:
-    # Kompakt progress bar
     progress = st.session_state.current / len(st.session_state.questions)
     st.progress(progress)
 
@@ -88,17 +86,21 @@ if not st.session_state.show_analysis:
             st.rerun()
 
 else:
-    # ANALİZ EKRANI
+    # ====================== ANALİZ EKRANI (YENİ HALİ) ======================
     st.title("📊 Sınav Analizi")
     correct_count = 0
     wrong_list = []
 
     for i, q in enumerate(st.session_state.questions):
-        user_ans = st.session_state.answers.get(i, "Boş")
-        if user_ans == q["correct"]:
+        user_letter = st.session_state.answers.get(i, "Boş")
+        if user_letter == q["correct"]:
             correct_count += 1
         else:
-            wrong_list.append((i+1, q["q"][:140] + "...", user_ans, q["correct"]))
+            # Tam şık metinlerini bul
+            user_full = next((opt for opt in q["options"] if opt.startswith(user_letter + ")")), user_letter)
+            correct_full = next((opt for opt in q["options"] if opt.startswith(q["correct"] + ")")), q["correct"])
+            
+            wrong_list.append((i+1, q["q"][:140] + "...", user_full, correct_full))
 
     percent = round((correct_count / len(st.session_state.questions)) * 100)
 
@@ -113,8 +115,15 @@ else:
             st.info("Tekrar deneyerek daha iyi sonuçlar alabilirsiniz.")
 
     st.subheader("Yanlış Yapılan Sorular")
-    for num, text, user, correct in wrong_list:
-        st.error(f"**Soru {num}**  \n{text}  \nSizin cevabınız: **{user}**  |  Doğru cevap: **{correct}**")
+    
+    for num, text, user_full, correct_full in wrong_list:
+        st.error(f"""
+**Soru {num}**  
+{text}  
+
+**Sizin cevabınız:** {user_full}  
+**Doğru cevap:** {correct_full}
+        """)
 
     col1, col2 = st.columns(2)
     with col1:
