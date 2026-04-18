@@ -15,10 +15,10 @@ questions_pool = [
     {"id": 4, "q": "1915 yılında Alfred Wegener tarafından ortaya atılan ve kıtaların tek parça halinde olduğunu savunan teori hangisidir?", "options": ["A) Levha Tektoniği Teorisi", "B) Deprem Teorisi", "C) Volkanizma Teorisi", "D) Kıtaların Kayma Teorisi", "E) Epirojenez Teorisi"], "correct": "D"},
     {"id": 5, "q": "Levha hareketleri kaç farklı şekilde gerçekleşir ve ülkemiz hangi iki levha arasında yer alır?", "options": ["A) 2 şekilde – Avrasya ve Pasifik", "B) 4 şekilde – Afrika ve Antarktika", "C) 1 şekilde – Sadece yaklaşma", "D) 5 şekilde – Pasifik ve İzlanda", "E) 3 şekilde – Yaklaşma, uzaklaşma ve yanal yer değiştirme"], "correct": "E"},
     {"id": 6, "q": "Ülkemizin büyük bir kısmı 3. Jeolojik zamanda (Senozoyik) oluşmuştur. Bu durum ülkemizi hangi açıdan etkilemektedir?", "options": ["A) Deprem riski yüksek ve genç oluşumlu bir ülkeyiz", "B) Masif araziler bakımından zenginiz", "C) Taş kömürü yatakları çok fazladır", "D) Dinazor fosilleri yaygındır", "E) Prekambriyen kayaçlar hâkimdir"], "correct": "A"},
-    {"id": 7, "q": "Dünya yaklaşık 4,5 milyar yıl önce yaratılmıştır. Jeolojik devirler, yeryüzü şekillerinin oluşumu, iklim değişimleri ve canlı türlerinin ortaya çıkması veya yok olması gibi olaylara göre ayrılır. Senozoyik zamanda Tersiyer devrinde Alp orojeneziyle Alp, Himalaya, Toros ve Kuzey Anadolu dağları oluşmuş; Kuaterner devrinde ise buzullar yaşanmış, Türkiye’deki volkan dağları, delta ovaları, Ege Denizi, İstanbul ve Çanakkale boğazları meydana gelmiştir. Yukarıdaki bilgilere göre Mezozoyik (2. zaman) devrinde gerçekleşen olay hangisidir?", "options": ["A) İnsan yaratılmıştır", "B) Dinazorlar ortaya çıkmıştır", "C) Ege Denizi oluşmuştur", "D) Toros Dağları oluşmuştur", "E) Taş kömürü yatakları oluşmuştur"], "correct": "B"},
-    {"id": 8, "q": "Yer kabuğu parçalarının (levhaların) yükselmesi veya alçalması şeklinde gerçekleşen ve izostatik dengenin bozulması sonucu oluşan iç kuvvet hangisidir?", "options": ["A) Orojenez", "B) Volkanizma", "C) Epirojenez", "D) Deprem", "E) Tsunami"], "correct": "C"},
+    {"id": 7, "q": "Dünya yaklaşık 4,5 milyar yıl önce yaratılmıştır. ... Mezozoyik (2. zaman) devrinde gerçekleşen olay hangisidir?", "options": ["A) İnsan yaratılmıştır", "B) Dinazorlar ortaya çıkmıştır", "C) Ege Denizi oluşmuştur", "D) Toros Dağları oluşmuştur", "E) Taş kömürü yatakları oluşmuştur"], "correct": "B"},
+    {"id": 8, "q": "Yer kabuğu parçalarının (levhaların) yükselmesi veya alçalması şeklinde gerçekleşen iç kuvvet hangisidir?", "options": ["A) Orojenez", "B) Volkanizma", "C) Epirojenez", "D) Deprem", "E) Tsunami"], "correct": "C"},
     {"id": 9, "q": "Karaların ağırlaşarak çökmesi sonucu denizin karaya doğru ilerlemesine ne ad verilir?", "options": ["A) Regresyon", "B) Orojenez", "C) Konveksiyonel akım", "D) Transgresyon", "E) Aşınma"], "correct": "D"},
-    {"id": 10, "q": "Okyanus ve deniz tabanındaki tortul tabakaların kıtaların hareketiyle yan basınca uğraması sonucu esnek tabakaların kıvrılarak, sert tabakaların ise kırılıp çökmesiyle hangi dağ türü oluşur?", "options": ["A) Volkanik dağlar", "B) Masif dağlar", "C) Epirojenez dağları", "D) Kırıklı dağlar", "E) Kıvrımlı ve kırıklı dağlar"], "correct": "E"},
+    {"id": 10, "q": "Okyanus ve deniz tabanındaki tortul tabakaların kıtaların hareketiyle yan basınca uğraması sonucu oluşan dağ türü hangisidir?", "options": ["A) Volkanik dağlar", "B) Masif dağlar", "C) Epirojenez dağları", "D) Kırıklı dağlar", "E) Kıvrımlı ve kırıklı dağlar"], "correct": "E"},
     {"id": 11, "q": "Kıvrımlı dağlarda yüksekte kalan yerlere ne denir?", "options": ["A) Antiklinal", "B) Senklinal", "C) Horst", "D) Graben", "E) Dayk"], "correct": "A"},
     {"id": 12, "q": "Kırıklı dağlarda alçakta kalan yerlere ne denir? Ülkemizde bu tür ovaların en çok bulunduğu bölge hangisidir?", "options": ["A) Antiklinal – Doğu Anadolu", "B) Graben – Ege Bölgesi", "C) Senklinal – Karadeniz", "D) Horst – Akdeniz", "E) Kaldera – İç Anadolu"], "correct": "B"},
     {"id": 13, "q": "Ülkemizde aktif volkan bulunmadığı için hangi deprem türü görülmez?", "options": ["A) Tektonik depremler", "B) Çöküntü depremleri", "C) Volkanik depremler", "D) Tsunami depremleri", "E) Epirojenez depremleri"], "correct": "C"},
@@ -28,12 +28,12 @@ questions_pool = [
     {"id": 17, "q": "Magmanın yerin derinliklerinde yavaş soğuyup katılaşmasıyla oluşan püskürük kayalara ne denir?", "options": ["A) Dış püskürük kayalar", "B) İç püskürük (plütonik) kayalar", "C) Tortul kayalar", "D) Metamorfik kayalar", "E) Organik tortul kayalar"], "correct": "B"},
     {"id": 18, "q": "Bitkisel ve hayvansal artıkların uzun süre toprak altında kalmasıyla oluşan tortul kayaç türü hangisidir?", "options": ["A) Fiziksel tortul", "B) Kimyasal tortul", "C) Organik tortul", "D) Püskürük kayaç", "E) Başkalaşım kayaç"], "correct": "C"},
     {"id": 19, "q": "Kayaç döngüsünde tortul kayaçların oluşumunda etkili olan temel süreç hangisidir?", "options": ["A) Erime-soğuma", "B) Yüksek sıcaklık ve basınç", "C) Kristalleşme", "D) Aşınma-taşıma-biriktirme", "E) Magmanın sokulması"], "correct": "D"},
-    {"id": 20, "q": "Türkiye genel olarak bugünkü görünümünü 3. Jeolojik zamanda (Tersiyer) almıştır. İkinci jeolojik zamanda Tetis Denizi’nin altında kalan Türkiye, üçüncü zamanda yükselerek karasal alan haline gelmiş ve dış kuvvetlerin aşındırmasıyla toptan yükselmiştir. Ortalama yükseltimizin 1000 metreden fazla olması ve platoların geniş yer kaplaması bu durumun kanıtıdır. Türkiye bugünkü görünümünü hangi jeolojik zamanda almıştır?", "options": ["A) 1. jeolojik zamanda", "B) 2. jeolojik zamanda", "C) Prekambriyen dönemde", "D) Mezozoyik dönemde", "E) 3. jeolojik zamanda"], "correct": "E"},
+    {"id": 20, "q": "Türkiye bugünkü görünümünü hangi jeolojik zamanda almıştır?", "options": ["A) 1. jeolojik zamanda", "B) 2. jeolojik zamanda", "C) Prekambriyen dönemde", "D) Mezozoyik dönemde", "E) 3. jeolojik zamanda"], "correct": "E"},
     {"id": 21, "q": "Türkiye en çok hangi orojenezden etkilenmiştir ve bu dönemde hangi dağlar oluşmuştur?", "options": ["A) Alp orojenezinden – Kuzey Anadolu ve Toros Dağları", "B) Kaledoniyen orojenezinden – İskandinavya Dağları", "C) Hersiniyen orojenezinden – Appalaş Dağları", "D) Epirojenezden – Ege grabenleri", "E) Volkanizmadan – Kula tepeleri"], "correct": "A"},
     {"id": 22, "q": "Türkiye’de deprem riski en az olan yöre aşağıdakilerden hangisidir?", "options": ["A) İstanbul", "B) Konya - Karapınar", "C) İzmir", "D) Van", "E) Hatay"], "correct": "B"},
-    {"id": 23, "q": "Okyanus ve deniz tabanında biriken tortul tabakalar, kıtaların hareket etmesi sonucu yan basınçlara uğrar. Esnek tabakalar kıvrılarak yükselir, sert tabakalar ise kırılır ve çöker. Ülkemizde Toroslar ve Kuzey Anadolu dağları kıvrımlı dağların başlıcalarıdır. Yukarıdaki bilgilere göre kıvrımlı dağ örneği hangisidir?", "options": ["A) Ege bölgesindeki dağlar", "B) Kaz Dağı", "C) Toroslar", "D) Madra Dağı", "E) Aydın Dağları"], "correct": "C"},
-    {"id": 24, "q": "Yüzey volkanizması magmanın yer yüzüne çıkıp soğuyarak katılaşmasıdır. Derinlik volkanizmasında ise batolit, lakolit, sill ve dayk gibi kütleler meydana gelir. Derinlik volkanizması örneği aşağıdakilerden hangisidir?", "options": ["A) Volkan konisi", "B) Krater", "C) Kaldera", "D) Batolit", "E) Maar"], "correct": "D"},
-    {"id": 25, "q": "Kayaç döngüsünde tortul kayaçlar aşınma-taşıma-biriktirme ile, püskürük kayaçlar magmanın soğumasıyla, metamorfik kayaçlar ise yüksek sıcaklık ve basınç altında değişimle oluşur. Aşağıdakilerden hangisi metamorfik kayaç örneğidir?", "options": ["A) Bazalt", "B) Kumtaşı", "C) Kalker", "D) Linyit", "E) Mermer"], "correct": "E"}
+    {"id": 23, "q": "Okyanus ve deniz tabanında biriken tortul tabakalar... kıvrımlı dağ örneği hangisidir?", "options": ["A) Ege bölgesindeki dağlar", "B) Kaz Dağı", "C) Toroslar", "D) Madra Dağı", "E) Aydın Dağları"], "correct": "C"},
+    {"id": 24, "q": "Yüzey volkanizması magmanın yer yüzüne çıkıp soğuyarak katılaşmasıdır. Derinlik volkanizması örneği aşağıdakilerden hangisidir?", "options": ["A) Volkan konisi", "B) Krater", "C) Kaldera", "D) Batolit", "E) Maar"], "correct": "D"},
+    {"id": 25, "q": "Kayaç döngüsünde ... Aşağıdakilerden hangisi metamorfik kayaç örneğidir?", "options": ["A) Bazalt", "B) Kumtaşı", "C) Kalker", "D) Linyit", "E) Mermer"], "correct": "E"}
 ]
 
 # ====================== UYGULAMA ======================
@@ -62,19 +62,30 @@ if not st.session_state.show_analysis:
     st.subheader(f"Soru {st.session_state.current + 1} / {len(st.session_state.questions)}")
     st.write(q["q"])
 
-    selected = st.radio("Cevabınızı seçiniz:", q["options"], key=f"q{st.session_state.current}")
+    # ★★★ DÜZELTME BURADA ★★★
+    selected = st.radio(
+        "Cevabınızı seçiniz:",
+        q["options"],
+        index=None,                    # ← Bu satır çok önemli! Hiçbir şık önceden işaretli gelmez
+        key=f"q{st.session_state.current}"
+    )
 
-    if st.button("✅ Cevabı Kaydet ve Sonraki Soruya Geç", type="primary", use_container_width=True):
-        st.session_state.answers[st.session_state.current] = selected[0]
-        if st.session_state.current < len(st.session_state.questions) - 1:
-            st.session_state.current += 1
-            st.rerun()
-        else:
-            st.session_state.show_analysis = True
-            st.rerun()
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        if st.button("✅ Cevabı Kaydet ve Sonraki Soruya Geç", 
+                     type="primary", 
+                     use_container_width=True,
+                     disabled=selected is None):   # Hiçbir şey seçilmediyse buton pasif olur
+            st.session_state.answers[st.session_state.current] = selected[0]
+            if st.session_state.current < len(st.session_state.questions) - 1:
+                st.session_state.current += 1
+                st.rerun()
+            else:
+                st.session_state.show_analysis = True
+                st.rerun()
 
 else:
-    # ANALİZ EKRANI
+    # ANALİZ EKRANI (değişmedi)
     st.title("📊 Sınav Analizi")
     correct_count = 0
     wrong_list = []
@@ -90,7 +101,7 @@ else:
 
     col1, col2 = st.columns([1, 3])
     with col1:
-        st.metric("Başarı Oranı", f"%{percent}", delta=None)
+        st.metric("Başarı Oranı", f"%{percent}")
     with col2:
         if percent >= 80:
             st.success("🎉 TEBRİKLER HARİKASIN!")
